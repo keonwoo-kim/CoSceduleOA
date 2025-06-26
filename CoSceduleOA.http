@@ -1,0 +1,6 @@
+@CoScheduleOA_HostAddress = http://localhost:5113
+
+GET {{CoScheduleOA_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

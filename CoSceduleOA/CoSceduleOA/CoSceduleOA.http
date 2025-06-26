@@ -1,6 +1,0 @@
-@CoSceduleOA_HostAddress = http://localhost:5113
-
-GET {{CoSceduleOA_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
