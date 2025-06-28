@@ -1,8 +1,6 @@
 using CoScheduleOA.Configurations;
 using CoScheduleOA.Domain.Context;
-using CoScheduleOA.Infrastructure;
 using CoScheduleOA.Infrastructure.Models;
-using CoScheduleOA.Infrastructure.Providers;
 using CoScheduleOA.Interfaces.Providers;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.EntityFrameworkCore;

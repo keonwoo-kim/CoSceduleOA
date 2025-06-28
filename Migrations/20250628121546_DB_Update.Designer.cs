@@ -3,6 +3,7 @@ using System;
 using CoScheduleOA.Domain.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CoScheduleOA.Migrations
 {
     [DbContext(typeof(CoScheduleOAContext))]
-    partial class CoScheduleOAContextModelSnapshot : ModelSnapshot
+    [Migration("20250628121546_DB_Update")]
+    partial class DB_Update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,11 +98,6 @@ namespace CoScheduleOA.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("UpdatedUtc")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("timestamp with time zone")
-                        .HasDefaultValueSql("timezone('utc', now())");
-
                     b.Property<string>("Url")
                         .IsRequired()
                         .HasColumnType("text");
@@ -145,8 +143,7 @@ namespace CoScheduleOA.Migrations
 
                     b.HasIndex("ItemId");
 
-                    b.HasIndex("UserId", "ItemId")
-                        .IsUnique();
+                    b.HasIndex("UserId");
 
                     b.ToTable("Ratings", "public");
                 });
@@ -189,9 +186,6 @@ namespace CoScheduleOA.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.HasIndex("UserName")
                         .IsUnique();
 
                     b.ToTable("Users", "public");

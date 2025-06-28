@@ -19,29 +19,29 @@ namespace CoScheduleOA.Controllers
         }
 
         [HttpGet("GetAll")]
-        public async Task<ActionResult<IEnumerable<RatingDto>>> GetAll(int itemId)
+        public async Task<ActionResult<IEnumerable<RatingDto>>> GetAll([FromQuery] int itemId)
         {
             var list = await _ratingService.GetByItemAsync(itemId);
             return Ok(list);
         }
 
         [HttpGet]
-        public async Task<ActionResult<RatingDto>> GetById(int id)
+        public async Task<ActionResult<RatingDto>> GetById([FromQuery] int id)
         {
             var dto = await _ratingService.FindAsync(id);
             if (dto == null) return NotFound();
             return Ok(dto);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<RatingDto>> Create(RatingCreateModel model)
+        [HttpPost] 
+        public async Task<ActionResult<RatingDto>> Create([FromBody] RatingCreateModel model)
         {
             var dto = await _ratingService.CreateAsync(model);
             return Ok(dto);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(RatingUpdateModel model)
+        public async Task<IActionResult> Update([FromBody] RatingUpdateModel model)
         {
             var success = await _ratingService.UpdateAsync(model);
             if (!success)
@@ -52,7 +52,7 @@ namespace CoScheduleOA.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete([FromQuery] int id)
         {
             var success = await _ratingService.DeleteAsync(id);
             if (!success)

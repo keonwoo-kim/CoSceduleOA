@@ -18,14 +18,14 @@ namespace CoScheduleOA.Controllers
         }
 
         [HttpGet("GetAll")]
-        public async Task<ActionResult<IEnumerable<CommentDto>>> GetAll(int itemId)
+        public async Task<ActionResult<IEnumerable<CommentDto>>> GetAll([FromQuery] int itemId)
         {
             var list = await _commentService.GetByItemAsync(itemId);
             return Ok(list);
         }
 
         [HttpGet]
-        public async Task<ActionResult<CommentDto>> GetById(int id)
+        public async Task<ActionResult<CommentDto>> GetById([FromQuery] int id)
         {
             var dto = await _commentService.FindAsync(id);
             if (dto == null) return NotFound();
@@ -33,14 +33,14 @@ namespace CoScheduleOA.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<CommentDto>> Create(CommentCreateModel model)
+        public async Task<ActionResult<CommentDto>> Create([FromBody] CommentCreateModel model)
         {
             var dto = await _commentService.CreateAsync(model);
             return Ok(dto);
         }
 
         [HttpPut]
-        public async Task<IActionResult> Update(CommentUpdateModel model)
+        public async Task<IActionResult> Update([FromBody] CommentUpdateModel model)
         {
             var success = await _commentService.UpdateAsync(model);
             if (!success)
@@ -51,7 +51,7 @@ namespace CoScheduleOA.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> Delete(int id)
+        public async Task<IActionResult> Delete([FromQuery] int id)
         {
             var success = await _commentService.DeleteAsync(id);
             if (!success)

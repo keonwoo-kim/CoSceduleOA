@@ -15,7 +15,7 @@ namespace CoScheduleOA.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<AccountDto?> GetAccountByLoginId(string userId)
+        public async Task<AccountDto?> GetAccountByLoginIdAsync(string userId)
         {
             var user = await _dbContext.Users
                 .AsNoTracking()
@@ -45,9 +45,7 @@ namespace CoScheduleOA.Repositories
                 .AnyAsync(u => u.UserId == userId);
         }
 
-
-
-        public async Task<User?> GetUserModelByUserId(string userId)
+        public async Task<User?> GetUserModelByUserIdAsync(string userId)
         {
             var user = await _dbContext.Users
                 .AsNoTracking()

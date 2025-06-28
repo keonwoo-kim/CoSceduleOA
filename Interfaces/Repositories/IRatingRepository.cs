@@ -15,6 +15,11 @@ namespace CoScheduleOA.Interfaces.Repositories
         Task<Rating?> FindByIdAsync(int id);
 
         /// <summary>
+        /// Check if user rating on an item exists.
+        /// </summary>
+        Task<bool> Exists(int userId, int itemId);
+
+        /// <summary>
         /// Retrieves all ratings associated with the specified item ID.
         /// </summary>
         Task<IEnumerable<Rating>> GetByItemAsync(int itemId);

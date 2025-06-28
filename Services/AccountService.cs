@@ -22,13 +22,13 @@ namespace CoScheduleOA.Services
             _awsSecretsProvider = awsSecretsProvider;
         }
 
-        public async Task<AccountDto?> GetAccountByLoginId(string userId)
+        public async Task<AccountDto?> GetAccountByLoginIdAsync(string userId)
         {
-            var result = await _accountRepository.GetAccountByLoginId(userId);
+            var result = await _accountRepository.GetAccountByLoginIdAsync(userId);
             return result;
         }
 
-        public async Task<AccountDto?> CreateAccount(CreateAccountRequestModel request)
+        public async Task<AccountDto?> CreateAccountAsync(CreateAccountRequestModel request)
         {
             if (await _accountRepository.Exists(request.UserId))
             {
@@ -50,9 +50,9 @@ namespace CoScheduleOA.Services
             return _mapper.Map<AccountDto>(newUser);
         }
 
-        public async Task<bool> VerifyPassword(string userId, string password)
+        public async Task<bool> VerifyPasswordAsync(string userId, string password)
         {
-            var user = await _accountRepository.GetUserModelByUserId(userId);
+            var user = await _accountRepository.GetUserModelByUserIdAsync(userId);
             if (user is null)
             {
                 return false;

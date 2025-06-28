@@ -10,6 +10,7 @@ namespace CoScheduleOA.Configurations
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();
             services.AddScoped<IRatingRepository, RatingRepository>();
+            services.AddScoped<IItemRepository, ItemRepository>();
 
             return services;
         }

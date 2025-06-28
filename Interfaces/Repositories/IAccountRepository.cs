@@ -8,7 +8,7 @@ namespace CoScheduleOA.Interfaces.Repositories
         /// <summary>
         /// Retrieves an account DTO by user ID. Returns null if not found.
         /// </summary>
-        Task<AccountDto?> GetAccountByLoginId(string userId);
+        Task<AccountDto?> GetAccountByLoginIdAsync(string userId);
 
         /// <summary>
         /// Retrieves an account DTO by ID. Returns null if not found.
@@ -28,6 +28,6 @@ namespace CoScheduleOA.Interfaces.Repositories
         /// <summary>
         /// Retrieves the user entity by user ID. Returns null if the user does not exist.
         /// </summary>
-        Task<User?> GetUserModelByUserId(string userId);
+        Task<User?> GetUserModelByUserIdAsync(string userId);
     }
 }

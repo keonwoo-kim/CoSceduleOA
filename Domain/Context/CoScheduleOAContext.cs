@@ -64,6 +64,8 @@ namespace CoScheduleOA.Domain.Context
                  .HasForeignKey(r => r.ItemId);
 
                 e.HasQueryFilter(r => !r.IsDeleted);
+
+                e.HasIndex(x => new { x.UserId, x.ItemId }).IsUnique();
             });
 
             b.Entity<User>(e =>
@@ -72,6 +74,7 @@ namespace CoScheduleOA.Domain.Context
                 e.HasIndex(x => x.UserId).IsUnique();
                 e.Property(x => x.UserId).IsRequired();
                 e.Property(x => x.UserName).IsRequired();
+                e.HasIndex(x => x.UserName).IsUnique();
                 e.Property(x => x.PasswordHash).IsRequired();
                 e.Property(x => x.CreatedUtc)
                  .HasDefaultValueSql("timezone('utc', now())");
@@ -91,6 +94,8 @@ namespace CoScheduleOA.Domain.Context
                 e.Property(x => x.Title).IsRequired();
                 e.Property(x => x.Url).IsRequired();
                 e.Property(x => x.CreatedUtc)
+                 .HasDefaultValueSql("timezone('utc', now())");
+                e.Property(x => x.UpdatedUtc)
                  .HasDefaultValueSql("timezone('utc', now())");
                 e.Property<bool>("IsDeleted")
                  .HasDefaultValue(false);

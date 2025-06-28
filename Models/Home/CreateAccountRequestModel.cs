@@ -11,6 +11,6 @@ namespace CoScheduleOA.Models.Home
         [Required]
         public required string Password { get; set; }
         [Required]
-        public required string RePassword { get; set; }
+        public required string ConfirmPassword { get; set; }
     }
 }

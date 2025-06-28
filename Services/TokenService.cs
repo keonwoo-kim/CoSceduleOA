@@ -29,8 +29,8 @@ namespace CoScheduleOA.Services
             var claims = new List<Claim>
             {
                 new(ClaimTypes.NameIdentifier, account.Id.ToString()),
-                new("UserId", account.UserId),
-                new("UserName", account.UserName)
+                new("userid", account.UserId),
+                new("username", account.UserName)
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secrets.GetJwtSecret()));

@@ -32,6 +32,13 @@ namespace CoScheduleOA.Repositories
                 .SingleOrDefaultAsync(r => r.Id == id);
         }
 
+        public async Task<bool> Exists(int userId, int itemId)
+        {
+            return await _dbContext.Ratings
+                .AsNoTracking()
+                .AnyAsync(r => r.UserId == userId && r.ItemId == itemId);
+        }
+
         public async Task<IEnumerable<Rating>> GetByItemAsync(int itemId)
         {
             return await _dbContext.Ratings

@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using Amazon.Runtime.Internal;
+using AutoMapper;
 using CoScheduleOA.Domain.Entities;
 using CoScheduleOA.Interfaces.Repositories;
 using CoScheduleOA.Interfaces.Services;
@@ -25,6 +26,11 @@ namespace CoScheduleOA.Services
         public async Task<RatingDto> CreateAsync(RatingCreateModel model)
         {
             var userId = _currentUser.Id ?? throw new UnauthorizedAccessException("No user context");
+
+            if(await _ratingRepository.Exists(_currentUser.Id.Value, model.ItemId))
+            {
+                throw new InvalidOperationException("Rating already exists for this user and item.");
+            }
 
             var entity = new Rating
             {

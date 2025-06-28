@@ -23,10 +23,10 @@ namespace CoScheduleOA.Services
         }
 
         public string? UserId =>
-            _httpContextAccessor.HttpContext?.User?.FindFirstValue("UserId");
+            _httpContextAccessor.HttpContext?.User?.FindFirstValue("userid");
 
         public string? UserName =>
-            _httpContextAccessor.HttpContext?.User?.FindFirstValue("UserName");
+            _httpContextAccessor.HttpContext?.User?.FindFirstValue("username");
 
         public bool IsAuthenticated =>
             _httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated ?? false;

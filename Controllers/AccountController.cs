@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace CoScheduleOA.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
         private readonly ILogger<AccountController> _logger;
@@ -26,11 +26,11 @@ namespace CoScheduleOA.Controllers
         [HttpPost("Login")]
         public async Task<ActionResult<LoginResponseModel>> Login([FromBody] LoginRequestModel loginRequest)
         {
-            if(!await _accountService.VerifyPassword(loginRequest.UserId, loginRequest.Password))
+            if(!await _accountService.VerifyPasswordAsync(loginRequest.UserId, loginRequest.Password))
             {
                 return Unauthorized(new LoginResponseModel { IsSuccess = false, Msg = "Invalid Credentials." });
             }
-            var user = await _accountService.GetAccountByLoginId(loginRequest.UserId);
+            var user = await _accountService.GetAccountByLoginIdAsync(loginRequest.UserId);
             var token = _tokenService.GenerateToken(user!);
             return Ok(new LoginResponseModel
             {
@@ -42,15 +42,15 @@ namespace CoScheduleOA.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("CreateAccount")]
-        public async Task<ActionResult<CreateAccountResponseModel>> CreateAccount(CreateAccountRequestModel createAccountRequest)
+        [HttpPost("Register")]
+        public async Task<ActionResult<CreateAccountResponseModel>> CreateAccount([FromBody] CreateAccountRequestModel createAccountRequest)
         {
-            if(createAccountRequest.Password != createAccountRequest.RePassword)
+            if(createAccountRequest.Password != createAccountRequest.ConfirmPassword)
             {
                 return Ok(new CreateAccountResponseModel { IsSuccess = false, Msg = "Passwords Did Not Match" });
             }
 
-            var user = await _accountService.CreateAccount(createAccountRequest);
+            var user = await _accountService.CreateAccountAsync(createAccountRequest);
 
             if (user is null)
             {

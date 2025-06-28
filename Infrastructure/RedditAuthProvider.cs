@@ -26,7 +26,6 @@ namespace CoScheduleOA.Infrastructure.Providers
 
         public async Task<string> GetAccessTokenAsync()
         {
-            // 캐시된 토큰 반환
             if (_cache.TryGetValue<string>(CacheKey, out var cachedToken) && !string.IsNullOrWhiteSpace(cachedToken))
             {
                 return cachedToken;
@@ -55,7 +54,6 @@ namespace CoScheduleOA.Infrastructure.Providers
                 ?? throw new InvalidOperationException("access_token not found");
             var expiresIn = doc.RootElement.GetProperty("expires_in").GetInt32();
 
-            // 캐시 설정: 만료시간에 맞춰 자동 제거
             _cache.Set(CacheKey, token, TimeSpan.FromSeconds(expiresIn - 30));
 
             return token;

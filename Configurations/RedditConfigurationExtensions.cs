@@ -31,7 +31,6 @@ namespace CoScheduleOA.Configurations
                         new AuthenticationHeaderValue("Basic", basicAuth);
                 });
 
-            // API 호출용 HttpClient: BaseAddress, User-Agent
             services.AddHttpClient<IRedditClientProvider, RedditClientProvider>()
                 .ConfigureHttpClient((sp, client) =>
                 {

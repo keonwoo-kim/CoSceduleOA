@@ -18,6 +18,7 @@ namespace CoScheduleOA.Configurations
             services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IRedditAuthProvider, RedditAuthProvider>();
             services.AddScoped<IRedditClientProvider, RedditClientProvider>();
+            services.AddScoped<IItemService, ItemService>();
             return services;
         }
     }

@@ -1,4 +1,5 @@
 ﻿using CoScheduleOA.Interfaces.Providers;
+using CoScheduleOA.Models.Reddit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ namespace CoScheduleOA.Controllers
         }
 
         [HttpGet("search")]
-        public async Task<IActionResult> Search([FromQuery] string query)
+        public async Task<ActionResult<RedditSearchResult>> Search([FromQuery] string query)
         {
             if (string.IsNullOrWhiteSpace(query))
             {

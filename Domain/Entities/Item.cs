@@ -8,6 +8,7 @@
         public string Title { get; set; } = null!;
         public string Url { get; set; } = null!;
         public DateTime CreatedUtc { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedUtc { get; set; } = DateTime.UtcNow;
         public bool IsDeleted { get; set; }
 
         public ICollection<Rating> Ratings { get; set; } = new List<Rating>();
