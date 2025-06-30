@@ -1,3 +1,4 @@
+using Amazon.Runtime.Credentials;
 using CoScheduleOA.Configurations;
 using CoScheduleOA.Domain.Context;
 using CoScheduleOA.Infrastructure.Models;
