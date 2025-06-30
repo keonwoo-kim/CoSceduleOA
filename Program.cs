@@ -75,6 +75,7 @@ builder.Services.AddCors(options =>
             policy
                 .WithOrigins(
                     "https://coschedule-client.vercel.app",
+                    "https://jk-coschedule-oa.com",
                     "https://www.jk-coschedule-oa.com"
                 )
                 .AllowAnyHeader()
@@ -83,7 +84,6 @@ builder.Services.AddCors(options =>
         }
     });
 });
-
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();
