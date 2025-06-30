@@ -73,7 +73,10 @@ builder.Services.AddCors(options =>
         else
         {
             policy
-                .WithOrigins("") //TODO: Add URL
+                .WithOrigins(
+                    "https://coschedule-client.vercel.app",
+                    "https://www.jk-coschedule-oa.com"
+                )
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
@@ -113,11 +116,11 @@ app.UseExceptionHandler(appError =>
     });
 });
 
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 app.UseHttpsRedirection();
 app.UseCors("AllowFrontend");
