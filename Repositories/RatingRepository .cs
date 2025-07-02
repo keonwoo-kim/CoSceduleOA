@@ -7,26 +7,28 @@ namespace CoScheduleOA.Repositories
 {
     public sealed class RatingRepository : IRatingRepository
     {
-        private readonly CoScheduleOAContext _dbContext;
+        private readonly IDbContextFactory<CoScheduleOAContext> _dbContextFactory;
 
-        public RatingRepository(CoScheduleOAContext dbContext)
+        public RatingRepository(IDbContextFactory<CoScheduleOAContext> dbContextFactory)
         {
-            _dbContext = dbContext;
+            _dbContextFactory = dbContextFactory;
         }
 
         public async Task<Rating> AddAsync(Rating entity)
         {
-            _dbContext.Ratings.Add(entity);
-            await _dbContext.SaveChangesAsync();
+            await using var context = _dbContextFactory.CreateDbContext();
+            context.Ratings.Add(entity);
+            await context.SaveChangesAsync();
 
-            return await _dbContext.Ratings
+            return await context.Ratings
                 .Include(c => c.User)
                 .FirstAsync(c => c.Id == entity.Id);
         }
 
         public async Task<Rating?> FindByIdAsync(int id)
         {
-            return await _dbContext.Ratings
+            await using var context = _dbContextFactory.CreateDbContext();
+            return await context.Ratings
                 .AsNoTracking()
                 .Include(c => c.User)
                 .SingleOrDefaultAsync(r => r.Id == id);
@@ -34,14 +36,16 @@ namespace CoScheduleOA.Repositories
 
         public async Task<bool> Exists(int userId, int itemId)
         {
-            return await _dbContext.Ratings
+            await using var context = _dbContextFactory.CreateDbContext();
+            return await context.Ratings
                 .AsNoTracking()
                 .AnyAsync(r => r.UserId == userId && r.ItemId == itemId);
         }
 
         public async Task<IEnumerable<Rating>> GetByItemAsync(int itemId)
         {
-            return await _dbContext.Ratings
+            await using var context = _dbContextFactory.CreateDbContext();
+            return await context.Ratings
                 .AsNoTracking()
                 .Include(c => c.User)
                 .Where(r => r.ItemId == itemId)
@@ -50,19 +54,21 @@ namespace CoScheduleOA.Repositories
 
         public async Task UpdateAsync(Rating entity)
         {
-            _dbContext.Ratings.Update(entity);
-            await _dbContext.SaveChangesAsync();
+            await using var context = _dbContextFactory.CreateDbContext();
+            context.Ratings.Update(entity);
+            await context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(int id)
         {
-            var r = await _dbContext.Ratings.FindAsync(id);
+            await using var context = _dbContextFactory.CreateDbContext();
+            var r = await context.Ratings.FindAsync(id);
             if (r is null)
             {
                 return;
             }
-            _dbContext.Ratings.Remove(r);
-            await _dbContext.SaveChangesAsync();
+            context.Ratings.Remove(r);
+            await context.SaveChangesAsync();
         }
     }
 }

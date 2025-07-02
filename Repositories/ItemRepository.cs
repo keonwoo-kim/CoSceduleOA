@@ -7,30 +7,33 @@ namespace CoScheduleOA.Repositories
 {
     public sealed class ItemRepository : IItemRepository
     {
-        private readonly CoScheduleOAContext _dbContext;
+        private readonly IDbContextFactory<CoScheduleOAContext> _dbContextFactory;
 
-        public ItemRepository(CoScheduleOAContext dbContext)
+        public ItemRepository(IDbContextFactory<CoScheduleOAContext> dbContextFactory)
         {
-            _dbContext = dbContext;
+            _dbContextFactory = dbContextFactory;
         }
 
         public async Task<bool> ExistsAsync(string source, string externalId)
         {
-            return await _dbContext.Items
+            await using var context = _dbContextFactory.CreateDbContext();
+            return await context.Items
                 .AnyAsync(i => i.Source == source && i.ExternalId == externalId);
         }
 
         public async Task<Item?> FindAsync(string source, string externalId)
         {
-            return await _dbContext.Items
+            await using var context = _dbContextFactory.CreateDbContext();
+            return await context.Items
                 .AsNoTracking()
                 .SingleOrDefaultAsync(i => i.Source == source && i.ExternalId == externalId);
         }
 
         public async Task AddAsync(Item item)
         {
-            _dbContext.Items.Add(item);
-            await _dbContext.SaveChangesAsync();
+            await using var context = _dbContextFactory.CreateDbContext();
+            context.Items.Add(item);
+            await context.SaveChangesAsync();
         }
     }
 }

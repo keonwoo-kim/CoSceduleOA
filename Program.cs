@@ -17,7 +17,7 @@ builder.Services.ConfigureServices();
 builder.Services.ConfigureJwt(builder.Configuration);
 builder.Services.AddRedditClients(builder.Configuration);
 
-builder.Services.AddDbContext<CoScheduleOAContext>((sp, options) =>
+builder.Services.AddDbContextFactory<CoScheduleOAContext>((sp, options) =>
 {
     var connBuilder = sp.GetRequiredService<IConnectionStringProvider>();
     var cfg = sp.GetRequiredService<IOptions<AwsSecretOptions>>().Value;
@@ -99,6 +99,22 @@ app.UseExceptionHandler(appError =>
 
         var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
 
+        if (exception is Npgsql.PostgresException pgEx && pgEx.SqlState == "28P01")
+        {
+            var connStringProvider = context.RequestServices.GetRequiredService<IConnectionStringProvider>();
+            var secretOptions = context.RequestServices.GetRequiredService<IOptions<AwsSecretOptions>>().Value;
+
+            connStringProvider.ForceRefresh(secretOptions.DbSecretId);
+
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            await context.Response.WriteAsJsonAsync(new
+            {
+                StatusCode = context.Response.StatusCode,
+                Message = "Database authentication failed. Secrets refreshed. Please retry."
+            });
+            return;
+        }
+
         context.Response.StatusCode = exception switch
         {
             UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
@@ -116,9 +132,10 @@ app.UseExceptionHandler(appError =>
     });
 });
 
+
 //if (app.Environment.IsDevelopment())
 //{
-    app.UseSwagger();
+app.UseSwagger();
     app.UseSwaggerUI();
 //}
 

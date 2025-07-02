@@ -3,6 +3,7 @@ using Amazon.SecretsManager.Model;
 using CoScheduleOA.Infrastructure.Models;
 using CoScheduleOA.Interfaces.Providers;
 using Microsoft.Extensions.Options;
+using Npgsql;
 using System.Text.Json;
 
 namespace CoScheduleOA.Infrastructure
@@ -43,6 +44,15 @@ namespace CoScheduleOA.Infrastructure
                     $"Username={cred.username};Password={cred.password}";
 
                 return _cachedConnectionString;
+            }
+        }
+
+        public void ForceRefresh(string secretId)
+        {
+            lock (_connLock)
+            {
+                _cachedConnectionString = null;
+                NpgsqlConnection.ClearAllPools();
             }
         }
     }
